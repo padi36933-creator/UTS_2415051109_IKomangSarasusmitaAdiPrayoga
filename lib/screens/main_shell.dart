@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'news_list_screen.dart';
 import 'profile_screen.dart';
+import 'saved_news_screen.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -26,11 +27,9 @@ class _MainShellState extends State<MainShell> {
         onExploreTap: () => _changeTab(1),
         onSavedTap: () => _changeTab(2),
       ),
-      const NewsListScreen(), // Tab ke-1: Menampilkan katalog berita API
-      const Scaffold(
-        body: Center(child: Text('Halaman Bookmark Database (Segera Hadir di Commit 12)')),
-      ),
-      const ProfileScreen(),
+      const NewsListScreen(),    // Tab ke-1: Menampilkan katalog berita API
+      const SavedNewsScreen(),   // Tab ke-2: Menampilkan daftar bookmark database
+      const ProfileScreen(),     // Tab ke-3: Profil pengembang
     ];
 
     return LayoutBuilder(
