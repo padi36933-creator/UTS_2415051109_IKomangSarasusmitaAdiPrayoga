@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/news_provider.dart';
+import 'repositories/news_repository.dart';
+import 'services/news_api_service.dart';
 import 'screens/main_shell.dart';
 
 void main() {
@@ -10,14 +14,25 @@ class NewsPulseApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'NewsPulse UTS',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => NewsProvider(
+            repository: NewsRepository(
+              apiService: NewsApiService(),
+            ),
+          ),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'NewsPulse UTS',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          useMaterial3: true,
+        ),
+        home: const MainShell(),
       ),
-      home: const MainShell(),
     );
   }
 }

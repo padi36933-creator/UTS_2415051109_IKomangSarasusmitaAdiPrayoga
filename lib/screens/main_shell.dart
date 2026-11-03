@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'news_list_screen.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 
@@ -24,6 +24,7 @@ class _MainShellState extends State<MainShell> {
       HomeScreen(
         onExploreTap: () => _changeTab(1),
         onSavedTap: () => _changeTab(2),
+        NewsListScreen(),
       ),
       const Scaffold(
         body: Center(child: Text('Halaman Katalog Berita API (Segera Hadir di Commit 8)')),
