@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
-import 'screens/profile_screen.dart';
+import 'screens/main_shell.dart';
 
 void main() {
   runApp(const NewsPulseApp());
@@ -18,10 +17,7 @@ class NewsPulseApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: HomeScreen(
-        onExploreTap: () {},
-        onSavedTap: () {},
-      ),
+      home: const MainShell(),
     );
   }
 }
