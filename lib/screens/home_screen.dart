@@ -15,112 +15,107 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('NewsPulse Dashboard'),
-        centerTitle: false,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Banner Headline
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.indigo.shade800, Colors.blue.shade600],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Row(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final bool isWide = constraints.maxWidth >= 600;
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Banner Utama
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(isWide ? 28 : 20),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.indigo.shade800, Colors.blue.shade600],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.public, color: Colors.white, size: 28),
-                      SizedBox(width: 8),
+                      const Row(
+                        children: [
+                          Icon(Icons.public, color: Colors.white, size: 26),
+                          SizedBox(width: 8),
+                          Flexible(
+                            child: Text(
+                              'Portal Berita & Catatan Riset',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
                       Text(
-                        'Portal Berita & Riset',
+                        'Eksplorasi Berita Sains & Teknologi Terkini Secara Real-time',
                         style: TextStyle(
-                          color: Colors.white70,
-                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          fontSize: isWide ? 24 : 19,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        onPressed: onExploreTap,
+                        icon: const Icon(Icons.travel_explore),
+                        label: const Text('Buka Katalog Berita API'),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Eksplorasi Berita Sains & Teknologi Terkini',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton.icon(
-                    onPressed: onExploreTap,
-                    icon: const Icon(Icons.travel_explore),
-                    label: const Text('Jelajahi Katalog Berita'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Akses Cepat',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: Card(
-                    child: InkWell(
-                      onTap: onExploreTap,
-                      borderRadius: BorderRadius.circular(12),
-                      child: const Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Icon(Icons.newspaper, size: 36, color: Colors.indigo),
-                            SizedBox(height: 8),
-                            Text('Katalog API', style: TextStyle(fontWeight: FontWeight.bold)),
-                            SizedBox(height: 4),
-                            Text('Berita Real-time', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Card(
-                    child: InkWell(
-                      onTap: onSavedTap,
-                      borderRadius: BorderRadius.circular(12),
-                      child: const Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Icon(Icons.bookmarks, size: 36, color: Colors.teal),
-                            SizedBox(height: 8),
-                            Text('Bookmark DB', style: TextStyle(fontWeight: FontWeight.bold)),
-                            SizedBox(height: 4),
-                            Text('Catatan Pribadi', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Menu Cepat (Responsive Layout)',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 12),
+                // Kondisi Responsif: Wide (Row 2 kolom) vs Compact (Column menurun)
+                if (isWide)
+                  Row(
+                    children: [
+                      Expanded(child: _buildFeatureCard(Icons.newspaper, 'Katalog REST API', 'Baca berita global terbaru', Colors.indigo, onExploreTap)),
+                      const SizedBox(width: 16),
+                      Expanded(child: _buildFeatureCard(Icons.bookmarks, 'Bookmark Database', 'Kelola catatan & opini pribadi', Colors.teal, onSavedTap)),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      _buildFeatureCard(Icons.newspaper, 'Katalog REST API', 'Baca berita global terbaru', Colors.indigo, onExploreTap),
+                      const SizedBox(height: 12),
+                      _buildFeatureCard(Icons.bookmarks, 'Bookmark Database', 'Kelola catatan & opini pribadi', Colors.teal, onSavedTap),
+                    ],
+                  ),
               ],
             ),
-          ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildFeatureCard(IconData icon, String title, String subtitle, Color color, VoidCallback onTap) {
+    return Card(
+      child: ListTile(
+        onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        leading: CircleAvatar(
+          backgroundColor: color.withOpacity(0.15),
+          child: Icon(icon, color: color),
         ),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(subtitle),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       ),
     );
   }
