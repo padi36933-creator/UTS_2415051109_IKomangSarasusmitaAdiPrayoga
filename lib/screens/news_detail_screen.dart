@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/article_model.dart';
+import 'add_bookmark_screen.dart';
 
 class NewsDetailScreen extends StatelessWidget {
   final ArticleModel article;
@@ -7,6 +8,11 @@ class NewsDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Mengambil tanggal aman (maksimal 10 karakter jika string tanggal tersedia)
+    final dateStr = article.publishedAt.isNotEmpty 
+        ? article.publishedAt.substring(0, 10) 
+        : '';
+
     return Scaffold(
       appBar: AppBar(title: Text(article.newsSite)),
       body: SingleChildScrollView(
@@ -30,7 +36,7 @@ class NewsDetailScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Sumber: ${article.newsSite} • ${article.publishedAt.substring(0, 10)}',
+                    'Sumber: ${article.newsSite} • $dateStr',
                     style: const TextStyle(color: Colors.grey, fontSize: 13),
                   ),
                   const SizedBox(height: 8),
@@ -53,8 +59,12 @@ class NewsDetailScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Fitur buka link web luar / bookmark akan dihubungkan ke Database pada tahap berikutnya.')),
+                        // Membuka halaman Form Tambah Bookmark dengan Passing Data (article)
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AddBookmarkScreen(article: article),
+                          ),
                         );
                       },
                       icon: const Icon(Icons.bookmark_add_outlined),
